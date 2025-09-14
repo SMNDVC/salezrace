@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="salezrace.FinishClientAction">
+        <div class="o_salezrace_finish p-4 mw-100">
+
+            <!-- On Track -->
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="m-0">On Track</h5>
+                <button class="btn btn-outline-secondary" t-att-disabled="state.loading" t-on-click="refreshBoth">
+                    Refresh
+                </button>
+            </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th style="width:100px;">#</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th style="width:200px;">Start Time</th>
+                            <th style="width:140px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="state.onTrack" t-as="r" t-key="r.id">
+                            <tr>
+                                <td><t t-esc="r.racer_no"/></td>
+                                <td><t t-esc="r.first_name"/></td>
+                                <td><t t-esc="r.last_name"/></td>
+                                <td><t t-esc="r.age"/></td>
+                                <td><t t-esc="r.gender"/></td>
+                                <td><t t-esc="r.start_time"/></td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-success" t-att-disabled="state.loading" t-on-click="() => onFinishNow(r)">
+                                        Finish now
+                                    </button>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Finishers -->
+            <h5 class="mb-2">Finishers</h5>
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th style="width:100px;">#</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th style="width:200px;">Start</th>
+                            <th style="width:200px;">Finish</th>
+                            <th style="width:120px;">Final Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="state.finishers" t-as="r" t-key="r.id">
+                            <tr>
+                                <td><t t-esc="r.racer_no"/></td>
+                                <td><t t-esc="r.first_name"/></td>
+                                <td><t t-esc="r.last_name"/></td>
+                                <td><t t-esc="r.age"/></td>
+                                <td><t t-esc="r.gender"/></td>
+                                <td><t t-esc="r.start_time"/></td>
+                                <td><t t-esc="r.finish_time"/></td>
+                                <td><t t-esc="r.final_time || formatDuration(r)"/></td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-danger"
+                                            t-on-click="() => this.onRevertFinish(r)">
+                                        Revert
+                                    </button>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_salezrace_racer_tree_main" model="ir.ui.view">
+        <field name="name">salezrace.racer.tree.main</field>
+        <field name="model">salezrace.racer</field>
+        <field name="arch" type="xml">
+            <tree string="Racers" editable="top" default_order="racer_no desc, id desc" limit="1000">
+                <field name="racer_no" groups="salezrace.group_salezrace_start_finish,salezrace.group_salezrace_manager"/>
+                <field name="first_name" required="1"/>
+                <field name="last_name" required="1"/>
+                <field name="age" required="1"/>
+                <field name="gender" required="1"/>
+                <field name="category"/>
+                <field name="email"
+                    string="Contact Address (Email)"
+                    groups="salezrace.group_salezrace_registration,salezrace.group_salezrace_manager"/>
+
+                <!-- Buttons remain; visibility can still be limited per button -->
+                <field name="racer_no" groups="salezrace.group_salezrace_registration"/>
+                <button name="action_assign_number"
+                        type="object"
+                        string="Assign Number"
+                        class="btn btn-secondary btn-sm"
+                        groups="salezrace.group_salezrace_registration,salezrace.group_salezrace_manager"/>
+
+                <!-- Manager-only -->
+                <button name="action_open_time_wizard"
+                        type="object"
+                        string="Edit Times"
+                        class="btn btn-outline-primary btn-sm"
+                        groups="salezrace.group_salezrace_manager"/>
+
+                <field name="start_time"
+                    groups="salezrace.group_salezrace_start_finish,salezrace.group_salezrace_manager"
+                    readonly="1"/>
+                <field name="finish_time"
+                    groups="salezrace.group_salezrace_start_finish,salezrace.group_salezrace_manager"
+                    readonly="1"/>
+                <field name="final_time"
+                    groups="salezrace.group_salezrace_start_finish,salezrace.group_salezrace_manager"
+                    readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- =========================================================
+         Users Form: Role selector placement
+         (Do NOT set groups_id on inherited view records)
+    ========================================================== -->
+    <record id="res_users_view_form_salezrace_role" model="ir.ui.view">
+        <field name="name">res.users.form.salezrace.role</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook/page[@name='access_rights']" position="inside">
+                <group string="SalezRace">
+                    <group string="SalezRace">
+                        <field name="salezrace_role" widget="selection"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_salezrace_racer_search" model="ir.ui.view">
+        <field name="name">salezrace.racer.search</field>
+        <field name="model">salezrace.racer</field>
+        <field name="arch" type="xml">
+            <search string="Racers">
+                <!-- Single combined search field -->
+                <field name="search_key" string="Dataset"/>
+
+                <!-- Filters -->
+                <filter name="unassigned" string="Unassigned" domain="[('racer_no', '=', 0)]"/>
+                <filter name="started" string="Started" domain="[('start_time', '!=', False)]"/>
+                <filter name="finished" string="Finished" domain="[('finish_time', '!=', False)]"/>
+
+                <!-- Group by -->
+                <group expand="0" string="Group By">
+                    <filter name="group_gender" string="Gender" context="{'group_by': 'gender'}"/>
+                </group>
+
+                <searchpanel>
+                    <field name="category"
+                        string="Categories"
+                        groups="salezrace.group_salezrace_manager,salezrace.group_salezrace_start_finish"/>
+            </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>

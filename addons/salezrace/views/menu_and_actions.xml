@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Root Menu -->
+    <menuitem
+        id="menu_salezrace_root"
+        name="SalezRace"
+        sequence="10"
+    />
+
+    <!-- =========================================================
+        Action + Menu (shared)
+        - No view_id: lets Odoo pick the proper tree by groups
+    ========================================================== -->
+    <record id="action_salezrace_racer" model="ir.actions.act_window">
+        <field name="name">Registration</field>
+        <field name="res_model">salezrace.racer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="views" eval="[(ref('salezrace.view_salezrace_racer_tree_main'), 'tree')]"/>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem
+        id="menu_salezrace_registration"
+        name="Registration"
+        parent="menu_salezrace_root"
+        action="action_salezrace_racer"
+        sequence="10"
+        groups="salezrace.group_salezrace_registration,salezrace.group_salezrace_start_finish,salezrace.group_salezrace_manager"/>
+
+
+
+    <!-- Start (Client Action + Menu) -->
+    <record id="action_salezrace_start_client" model="ir.actions.client">
+        <field name="name">Start</field>
+        <field name="tag">salezrace.start_action</field>
+    </record>
+
+    <menuitem
+        id="menu_salezrace_start"
+        name="Start"
+        parent="menu_salezrace_root"
+        action="action_salezrace_start_client"
+        sequence="20"
+        groups="salezrace.group_salezrace_start_finish,salezrace.group_salezrace_manager"
+    />
+
+    <!-- Finish (Client Action + Menu) -->
+    <record id="action_salezrace_finish_client" model="ir.actions.client">
+        <field name="name">Finish</field>
+        <field name="tag">salezrace.finish_action</field>
+    </record>
+
+    <menuitem
+        id="menu_salezrace_finish"
+        name="Finish"
+        parent="menu_salezrace_root"
+        action="action_salezrace_finish_client"
+        sequence="30"
+        groups="salezrace.group_salezrace_start_finish,salezrace.group_salezrace_manager"
+    />
+    
+    <!-- Action menu entry on salezrace.racer list to call the method above -->
+    <record id="action_assign_smallest_numbers" model="ir.actions.server">
+        <field name="name">Assign Numbers</field>
+        <field name="model_id" ref="model_salezrace_racer"/>
+        <field name="binding_model_id" ref="model_salezrace_racer"/>
+        <field name="state">code</field>
+        <field name="code">records.action_assign_smallest_numbers()</field>
+    </record>
+
+</odoo>

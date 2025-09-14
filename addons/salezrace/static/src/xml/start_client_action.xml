@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="salezrace.StartClientAction">
+        <div class="o_salezrace_start p-4 mw-100 fs-4"> <!-- fs-4 = larger font -->
+            <!-- Search input -->
+            <div class="mb-3 d-flex align-items-center">
+                <input class="form-control w-auto" style="width: 150px;"
+                       type="number" t-att-disabled="state.loading"
+                       placeholder="Racer No."
+                       t-on-input="onInputChange"
+                       t-att-value="state.racerNo"/>
+            </div>
+
+            <!-- Error -->
+            <t t-if="state.error">
+                <div class="alert alert-warning fs-5" role="alert"><t t-esc="state.error"/></div>
+            </t>
+
+            <!-- Racer info -->
+            <t t-if="state.racer">
+                <div class="card p-3 fs-5">
+                    <!-- Added compact header from second file (name + number) -->
+                    <div class="fw-bold mb-2">
+                        <t t-if="state.racer.racer_no"> #<t t-esc="state.racer.racer_no"/> </t>
+                        <t t-esc="(state.racer.first_name || '') + ' ' + (state.racer.last_name || '')"/>
+                    </div>
+
+                    <div class="d-flex flex-column gap-2">        
+                        <div><b>Age:</b> <span><t t-esc="state.racer.age"/></span></div>
+                        <div><b>Gender:</b> <span><t t-esc="state.racer.gender"/></span></div>
+                        <div><b>Category:</b> <span><t t-esc="state.racer.category"/></span></div>
+                    </div>
+
+                    <!-- Start button below -->
+                    <div class="mt-3">
+                        <div class="d-flex gap-3">
+                            <button class="btn btn-primary btn-lg" t-att-disabled="!canStart" t-on-click="onClickStart">
+                                Start
+                            </button>
+                            <t t-if="state.racer.start_time">
+                                <div class="text-muted mt-2">
+                                    Already started at <t t-esc="state.racer.start_time"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+            <!-- ===================== -->
+            <!-- Summary tables (added) -->
+            <!-- ===================== -->
+            <div class="row mt-4 g-3">
+                <!-- Left: last 10 started -->
+                <div class="col-12 col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header fw-bold">Last 10 started</div>
+                        <div class="card-body p-0">
+                            <table class="table table-sm table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 6rem;">No.</th>
+                                        <th>Name</th>
+                                        <th style="width: 12rem;">Started</th>
+                                        <th style="width: 8rem;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="state.recentStarted" t-as="r" t-key="r.id">
+                                        <tr>
+                                            <td><t t-esc="r.racer_no"/></td>
+                                            <td><t t-esc="(r.first_name || '') + ' ' + (r.last_name || '')"/></td>
+                                            <td><t t-esc="r.start_time"/></td>
+                                            <td>
+                                                <!-- Keep component context via 'this' -->
+                                                <button class="btn btn-sm btn-outline-danger"
+                                                        t-on-click="() => this.onClickRevert(r)">
+                                                    Revert
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="!state.recentStarted.length">
+                                        <tr>
+                                            <td colspan="4" class="text-muted">No racers have started yet.</td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: next to start -->
+                <div class="col-12 col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header fw-bold">Next to start (by number)</div>
+                        <div class="card-body p-0">
+                            <table class="table table-sm table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 6rem;">No.</th>
+                                        <th>Name</th>
+                                        <th style="width: 8rem;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="state.nextToStart" t-as="r" t-key="r.id">
+                                        <tr>
+                                            <td><t t-esc="r.racer_no"/></td>
+                                            <td><t t-esc="(r.first_name || '') + ' ' + (r.last_name || '')"/></td>
+                                            <td>
+                                                <!-- Keep component context via 'this' -->
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                        t-on-click="() => this.onClickLoad(r)">
+                                                    Load
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="!state.nextToStart.length">
+                                        <tr>
+                                            <td colspan="3" class="text-muted">No racers waiting to start.</td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Summary tables -->
+        </div>
+    </t>
+</templates>

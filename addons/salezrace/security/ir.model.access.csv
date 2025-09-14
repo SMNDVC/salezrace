@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+salezrace_racer_access_registration,Registration on racer,model_salezrace_racer,salezrace.group_salezrace_registration,1,1,1,0
+salezrace_racer_access_startfinish,Start/Finish on racer,model_salezrace_racer,salezrace.group_salezrace_start_finish,1,1,0,0
+salezrace_racer_access_manager,Manager on racer,model_salezrace_racer,salezrace.group_salezrace_manager,1,1,1,1
+salezrace_time_wizard_mgr,Manager on time wizard,model_salezrace_racer_time_wizard,salezrace.group_salezrace_manager,1,1,1,1
+salezrace_finishlog_access_manager,Manager on finish log,model_salezrace_finish_log,salezrace.group_salezrace_manager,1,1,1,1
