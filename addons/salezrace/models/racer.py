@@ -355,6 +355,16 @@ class SalezRaceRacer(models.Model):
         string="Active Pause Start Time",
     )
 
+    active_pause_checkpoint_name = fields.Char(
+        related="active_pause_log_id.checkpoint_id.name",
+        string="Active Pause Checkpoint Name",
+    )
+
+    active_pause_user_id = fields.Many2one(
+        related="active_pause_log_id.user_id",
+        string="Active Pause User",
+    )
+
     total_pause_time = fields.Float(
         string="Total Pause (s)",
         compute="_compute_total_pause_time",
@@ -381,12 +391,10 @@ class SalezRaceRacer(models.Model):
         if self.active_pause_log_id:
             raise UserError(_("This racer already has an active pause."))
         
-        session_id = request.session.sid if request else None
         self.env["salezrace.pause.log"].create({
             "racer_id": self.id,
             "checkpoint_id": checkpoint_id,
             "start_time": fields.Datetime.now(),
-            "session_id": session_id,
         })
         return self._get_racer_pause_state()
 
@@ -395,8 +403,7 @@ class SalezRaceRacer(models.Model):
         if not self.active_pause_log_id:
             raise UserError(_("This racer has no active pause to end."))
         
-        session_id = request.session.sid if request else None
-        if self.active_pause_log_id.session_id != session_id:
+        if self.active_pause_log_id.user_id != self.env.user:
             raise UserError(_("Only the person that started the pause can end it."))
 
         self.active_pause_log_id.write({"end_time": fields.Datetime.now()})
@@ -407,8 +414,7 @@ class SalezRaceRacer(models.Model):
         if not self.active_pause_log_id:
             raise UserError(_("This racer has no active pause to revert."))
 
-        session_id = request.session.sid if request else None
-        if self.active_pause_log_id.session_id != session_id:
+        if self.active_pause_log_id.user_id != self.env.user:
             raise UserError(_("Only the person that started the pause can revert it."))
 
         self.active_pause_log_id.unlink()

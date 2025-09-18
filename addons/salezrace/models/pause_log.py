@@ -11,7 +11,6 @@ class SalezRacePauseLog(models.Model):
     start_time = fields.Datetime()
     end_time = fields.Datetime()
     user_id = fields.Many2one("res.users", string="Started By", default=lambda self: self.env.user)
-    session_id = fields.Char("Session ID")
     is_invalid = fields.Boolean(default=False)
     is_custom = fields.Boolean(default=False)
 

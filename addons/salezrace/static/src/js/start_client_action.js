@@ -49,7 +49,7 @@ export class StartClientAction extends Component {
             );
             const waiting = await this.orm.searchRead(
                 "salezrace.racer",
-                [["start_time", "=", false]],
+                [["start_time", "=", false], ["racer_no", "!=", 0]],
                 ["id", "racer_no", "first_name", "last_name"],
                 { order: "racer_no asc", limit: 10 }
             );

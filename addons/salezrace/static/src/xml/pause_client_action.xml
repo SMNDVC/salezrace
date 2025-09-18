@@ -34,42 +34,47 @@
                                 <tr>
                                     <td>#<t t-esc="racer.racer_no"/> <t t-esc="racer.first_name"/> <t t-esc="racer.last_name"/></td>
                                     <td class="text-end">
-                                        <div class="d-flex justify-content-end align-items-center">
-                                            <t t-if="!racer.showCustomTimeInput">
-                                                <span class="me-2">Čas: <t t-esc="(racer.checkpoint_pause_time + racer.live_pause_time).toFixed(0)"/>s</span>
-                                            </t>
-                                            <t t-if="!racer.active_pause_log_id">
-                                                <div class="d-flex justify-content-end">
-                                                    <t t-if="!racer.showCustomTimeInput">
-                                                        <button class="btn btn-sm btn-primary me-2" t-on-click="() => this.onPauseStart(racer)">
-                                                            Prestoj
-                                                        </button>
-                                                        <button class="btn btn-sm btn-warning" t-on-click="() => this.onCustomTime(racer)">
-                                                            Korekcia
-                                                        </button>
-                                                    </t>
-                                                    <t t-if="racer.showCustomTimeInput">
-                                                        <button class="btn btn-sm btn-secondary" t-on-click="() => racer.custom_time--">-</button>
-                                                        <input type="number" t-model="racer.custom_time" style="width: 60px;"/>
-                                                        <button class="btn btn-sm btn-secondary" t-on-click="() => racer.custom_time++">+</button>
-                                                        <button class="btn btn-sm btn-primary" t-on-click="() => this.onConfirmCustomTime(racer)">
-                                                            <i class="fa fa-check"/>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-danger" t-on-click="() => this.onCancelCustomTime(racer)">
-                                                            <i class="fa fa-times"/>
-                                                        </button>
-                                                    </t>
-                                                </div>
-                                            </t>
-                                            <t t-if="racer.active_pause_log_id">
-                                                <button class="btn btn-sm btn-success" t-on-click="() => this.onPauseEnd(racer)">
-                                                    Pokračovať
-                                                </button>
-                                                <!-- <button class="btn btn-sm btn-danger" t-on-click="() => this.onPauseInvalidate(racer)">
-                                                    Vynulovať
-                                                </button> -->
-                                            </t>
-                                        </div>
+                                        <t t-if="racer.active_pause_log_id &amp;&amp; racer.active_pause_user_id[0] !== state.session.uid">
+                                            <span>Tento bežec práve stojí na stanovisku <t t-esc="racer.active_pause_checkpoint_name"/></span>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="d-flex justify-content-end align-items-center">
+                                                <t t-if="!racer.showCustomTimeInput">
+                                                    <span class="me-2">Čas: <t t-esc="(racer.checkpoint_pause_time + racer.live_pause_time).toFixed(0)"/>s</span>
+                                                </t>
+                                                <t t-if="!racer.active_pause_log_id">
+                                                    <div class="d-flex justify-content-end">
+                                                        <t t-if="!racer.showCustomTimeInput">
+                                                            <button class="btn btn-sm btn-primary me-2" t-on-click="() => this.onPauseStart(racer)">
+                                                                Prestoj
+                                                            </button>
+                                                            <button class="btn btn-sm btn-warning" t-on-click="() => this.onCustomTime(racer)">
+                                                                Korekcia
+                                                            </button>
+                                                        </t>
+                                                        <t t-if="racer.showCustomTimeInput">
+                                                            <button class="btn btn-sm btn-secondary" t-on-click="() => racer.custom_time--">-</button>
+                                                            <input type="number" t-model="racer.custom_time" style="width: 60px;"/>
+                                                            <button class="btn btn-sm btn-secondary" t-on-click="() => racer.custom_time++">+</button>
+                                                            <button class="btn btn-sm btn-primary" t-on-click="() => this.onConfirmCustomTime(racer)">
+                                                                <i class="fa fa-check"/>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-danger" t-on-click="() => this.onCancelCustomTime(racer)">
+                                                                <i class="fa fa-times"/>
+                                                            </button>
+                                                        </t>
+                                                    </div>
+                                                </t>
+                                                <t t-if="racer.active_pause_log_id">
+                                                    <button class="btn btn-sm btn-success" t-on-click="() => this.onPauseEnd(racer)">
+                                                        Pokračovať
+                                                    </button>
+                                                    <!-- <button class="btn btn-sm btn-danger" t-on-click="() => this.onPauseInvalidate(racer)">
+                                                        Vynulovať
+                                                    </button> -->
+                                                </t>
+                                            </div>
+                                        </t>
                                     </td>
                                 </tr>
                             </t>

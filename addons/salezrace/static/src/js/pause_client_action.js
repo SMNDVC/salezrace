@@ -3,6 +3,7 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Component, useState, onWillStart, onMounted, onWillUnmount } from "@odoo/owl";
+import { session } from "@web/session";
 
 export class PauseClientAction extends Component {
     static template = "salezrace.PauseClientAction";
@@ -17,6 +18,7 @@ export class PauseClientAction extends Component {
             onTrack: [],
             loading: false,
             livePause: {},
+            session: session,
         });
 
         this.timer = null;
@@ -94,7 +96,7 @@ export class PauseClientAction extends Component {
             const onTrack = await this.orm.searchRead(
                 "salezrace.racer",
                 [["start_time", "!=", false], ["finish_time", "=", false]],
-                ["id", "racer_no", "first_name", "last_name", "active_pause_log_id"],
+                ["id", "racer_no", "first_name", "last_name", "active_pause_log_id", "active_pause_checkpoint_name", "active_pause_user_id"],
                 { order: "start_time asc, id asc" }
             );
 
@@ -120,6 +122,8 @@ export class PauseClientAction extends Component {
                 if (existing_racer) {
                     existing_racer.checkpoint_pause_time = checkpoint_pause_time;
                     existing_racer.active_pause_log_id = racer.active_pause_log_id;
+                    existing_racer.active_pause_checkpoint_name = racer.active_pause_checkpoint_name;
+                    existing_racer.active_pause_user_id = racer.active_pause_user_id;
                 } else {
                     this.state.onTrack.push({ ...racer, checkpoint_pause_time: checkpoint_pause_time, live_pause_time: 0, showCustomTimeInput: false, custom_time: 0 });
                 }
