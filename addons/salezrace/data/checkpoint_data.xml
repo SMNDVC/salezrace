@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="salezrace_checkpoint_1" model="salezrace.checkpoint">
+            <field name="name">Šplhanie</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="salezrace_checkpoint_2" model="salezrace.checkpoint">
+            <field name="name">Beh cez pneumatiky</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="salezrace_checkpoint_3" model="salezrace.checkpoint">
+            <field name="name">Podliezanie pod sieť</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="salezrace_checkpoint_4" model="salezrace.checkpoint">
+            <field name="name">Beh cez auto</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="salezrace_checkpoint_5" model="salezrace.checkpoint">
+            <field name="name">Prenos závažia</field>
+            <field name="sequence">5</field>
+        </record>
+        <record id="salezrace_checkpoint_6" model="salezrace.checkpoint">
+            <field name="name">Sieť</field>
+            <field name="sequence">6</field>
+        </record>
+        <record id="salezrace_checkpoint_7" model="salezrace.checkpoint">
+            <field name="name">Švihadlo</field>
+            <field name="sequence">7</field>
+        </record>
+        <record id="salezrace_checkpoint_8" model="salezrace.checkpoint">
+            <field name="name">Ručkovanie</field>
+            <field name="sequence">8</field>
+        </record>
+    </data>
+</odoo>

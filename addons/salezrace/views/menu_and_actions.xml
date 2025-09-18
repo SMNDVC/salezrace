@@ -60,6 +60,21 @@
         sequence="30"
         groups="salezrace.group_salezrace_start_finish,salezrace.group_salezrace_manager"
     />
+
+    <!-- Pause (Client Action + Menu) -->
+    <record id="action_salezrace_pause_client" model="ir.actions.client">
+        <field name="name">Pause</field>
+        <field name="tag">salezrace.pause_action</field>
+    </record>
+
+    <menuitem
+        id="menu_salezrace_pause"
+        name="Pause"
+        parent="menu_salezrace_root"
+        action="action_salezrace_pause_client"
+        sequence="40"
+        groups="salezrace.group_salezrace_manager,salezrace.group_salezrace_pause"
+    />
     
     <!-- Action menu entry on salezrace.racer list to call the method above -->
     <record id="action_assign_smallest_numbers" model="ir.actions.server">

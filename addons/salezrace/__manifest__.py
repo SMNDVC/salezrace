@@ -11,10 +11,13 @@
     "data": [
         "security/salezrace_security.xml",
         "security/ir.model.access.csv",
+        "data/cron.xml",
+        "data/checkpoint_data.xml",
         "views/racer_views.xml",
         "views/racer_time_wizard_views.xml",
+        "views/pause_log_views.xml",
         "views/menu_and_actions.xml",
-        "views/hide_apps.xml"
+        "views/hide_apps.xml",
     ],
     "assets": {
         "web.assets_backend": [
@@ -23,6 +26,8 @@
             "salezrace/static/src/js/finish_client_action.js",
             "salezrace/static/src/xml/finish_client_action.xml",
             'salezrace/static/src/scss/style.scss',
+            "salezrace/static/src/js/pause_client_action.js",
+            "salezrace/static/src/xml/pause_client_action.xml",
         ],
     },
     "installable": True,

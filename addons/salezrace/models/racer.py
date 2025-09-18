@@ -5,7 +5,9 @@ from typing import List, Tuple
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.osv import expression 
+from odoo.http import request
+from odoo.osv import expression
+from datetime import timedelta 
 
 class SalezRaceRacer(models.Model):
     """Racer registration model."""
@@ -338,3 +340,120 @@ class SalezRaceRacer(models.Model):
             next_candidate += 1
 
         return True
+
+    pause_log_ids = fields.One2many(
+        "salezrace.pause.log", "racer_id", string="Pause Logs"
+    )
+    active_pause_log_id = fields.Many2one(
+        "salezrace.pause.log",
+        compute="_compute_active_pause_log_id",
+        string="Active Pause Log",
+    )
+
+    active_pause_start_time = fields.Datetime(
+        related="active_pause_log_id.start_time",
+        string="Active Pause Start Time",
+    )
+
+    total_pause_time = fields.Float(
+        string="Total Pause (s)",
+        compute="_compute_total_pause_time",
+        store=True,
+    )
+
+    
+
+    @api.depends("pause_log_ids.is_invalid", "pause_log_ids.start_time", "pause_log_ids.end_time")
+    def _compute_total_pause_time(self):
+        for racer in self:
+            racer.total_pause_time = sum(racer.pause_log_ids.filtered(lambda log: not log.is_invalid).mapped("duration"))
+
+    @api.depends("pause_log_ids.start_time", "pause_log_ids.end_time")
+    def _compute_active_pause_log_id(self):
+        for racer in self:
+            active_log = racer.pause_log_ids.filtered(
+                lambda log: log.start_time and not log.end_time
+            )
+            racer.active_pause_log_id = active_log[:1]
+
+    def action_pause_start(self, checkpoint_id):
+        self.ensure_one()
+        if self.active_pause_log_id:
+            raise UserError(_("This racer already has an active pause."))
+        
+        session_id = request.session.sid if request else None
+        self.env["salezrace.pause.log"].create({
+            "racer_id": self.id,
+            "checkpoint_id": checkpoint_id,
+            "start_time": fields.Datetime.now(),
+            "session_id": session_id,
+        })
+        return self._get_racer_pause_state()
+
+    def action_pause_end(self):
+        self.ensure_one()
+        if not self.active_pause_log_id:
+            raise UserError(_("This racer has no active pause to end."))
+        
+        session_id = request.session.sid if request else None
+        if self.active_pause_log_id.session_id != session_id:
+            raise UserError(_("Only the person that started the pause can end it."))
+
+        self.active_pause_log_id.write({"end_time": fields.Datetime.now()})
+        return self._get_racer_pause_state()
+
+    def action_pause_revert(self):
+        self.ensure_one()
+        if not self.active_pause_log_id:
+            raise UserError(_("This racer has no active pause to revert."))
+
+        session_id = request.session.sid if request else None
+        if self.active_pause_log_id.session_id != session_id:
+            raise UserError(_("Only the person that started the pause can revert it."))
+
+        self.active_pause_log_id.unlink()
+        return self._get_racer_pause_state()
+
+    def action_invalidate_logs(self, checkpoint_id):
+        self.ensure_one()
+        pause_logs = self.env["salezrace.pause.log"].search([
+            ("racer_id", "=", self.id),
+            ("checkpoint_id", "=", checkpoint_id),
+        ])
+        pause_logs.write({"is_invalid": True})
+        return True
+
+    def action_custom_time(self, checkpoint_id, custom_time):
+        self.ensure_one()
+        self.action_invalidate_logs(checkpoint_id)
+        now = fields.Datetime.now()
+        self.env["salezrace.pause.log"].create({
+            "racer_id": self.id,
+            "checkpoint_id": checkpoint_id,
+            "start_time": now,
+            "end_time": now + timedelta(seconds=custom_time),
+            "is_custom": True,
+        })
+        return True
+
+    def _get_racer_pause_state(self):
+        self.ensure_one()
+        return {
+            "id": self.id,
+            "racer_no": self.racer_no,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "active_pause_log_id": self.active_pause_log_id.id,
+            "total_pause_time": self.total_pause_time,
+        }
+
+    def action_show_pause_logs(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Pause Logs"),
+            "res_model": "salezrace.pause.log",
+            "view_mode": "tree,form",
+            "domain": [("racer_id", "=", self.id)],
+            "target": "new",
+        }

@@ -14,12 +14,17 @@
         <field name="name">Start/Finish</field>
         <field name="category_id" ref="salezrace.module_category_salezrace"/>
     </record>
+    <record id="group_salezrace_pause" model="res.groups">
+        <field name="name">Pause</field>
+        <field name="category_id" ref="salezrace.module_category_salezrace"/>
+    </record>
     <record id="group_salezrace_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="salezrace.module_category_salezrace"/>
         <field name="implied_ids" eval="[
             (4, ref('salezrace.group_salezrace_registration')),
             (4, ref('salezrace.group_salezrace_start_finish')),
+            (4, ref('salezrace.group_salezrace_pause')),
         ]"/>
 </record>
 

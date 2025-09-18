@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="salezrace.PauseClientAction">
+        <div class="o_salezrace_pause p-4 mw-100">
+            <t t-if="!state.selectedCheckpoint">
+                <div class="list-group">
+                    <t t-foreach="state.checkpoints" t-as="checkpoint" t-key="checkpoint.id">
+                        <button type="button" class="list-group-item list-group-item-action" t-on-click="() => selectCheckpoint(checkpoint)">
+                            <t t-esc="checkpoint.name"/>
+                        </button>
+                    </t>
+                </div>
+            </t>
+            <t t-if="state.selectedCheckpoint">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="m-0"><t t-esc="state.selectedCheckpoint.name"/></h5>
+                    <div>
+                        <button class="btn btn-outline-secondary me-2" t-on-click="backToCheckpoints">Späť</button>
+                        <button class="btn btn-outline-secondary" t-att-disabled="state.loading" t-on-click="refresh">
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive mb-4">
+                    <table class="table table-sm align-middle">
+                        <thead>
+                            <tr>
+                                <th>Bežec</th>
+                                <th style="width:400px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="state.onTrack" t-as="racer" t-key="racer.id">
+                                <tr>
+                                    <td>#<t t-esc="racer.racer_no"/> <t t-esc="racer.first_name"/> <t t-esc="racer.last_name"/></td>
+                                    <td class="text-end">
+                                        <div class="d-flex justify-content-end align-items-center">
+                                            <t t-if="!racer.showCustomTimeInput">
+                                                <span class="me-2">Čas: <t t-esc="(racer.checkpoint_pause_time + racer.live_pause_time).toFixed(0)"/>s</span>
+                                            </t>
+                                            <t t-if="!racer.active_pause_log_id">
+                                                <div class="d-flex justify-content-end">
+                                                    <t t-if="!racer.showCustomTimeInput">
+                                                        <button class="btn btn-sm btn-primary me-2" t-on-click="() => this.onPauseStart(racer)">
+                                                            Prestoj
+                                                        </button>
+                                                        <button class="btn btn-sm btn-warning" t-on-click="() => this.onCustomTime(racer)">
+                                                            Korekcia
+                                                        </button>
+                                                    </t>
+                                                    <t t-if="racer.showCustomTimeInput">
+                                                        <button class="btn btn-sm btn-secondary" t-on-click="() => racer.custom_time--">-</button>
+                                                        <input type="number" t-model="racer.custom_time" style="width: 60px;"/>
+                                                        <button class="btn btn-sm btn-secondary" t-on-click="() => racer.custom_time++">+</button>
+                                                        <button class="btn btn-sm btn-primary" t-on-click="() => this.onConfirmCustomTime(racer)">
+                                                            <i class="fa fa-check"/>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-danger" t-on-click="() => this.onCancelCustomTime(racer)">
+                                                            <i class="fa fa-times"/>
+                                                        </button>
+                                                    </t>
+                                                </div>
+                                            </t>
+                                            <t t-if="racer.active_pause_log_id">
+                                                <button class="btn btn-sm btn-success" t-on-click="() => this.onPauseEnd(racer)">
+                                                    Pokračovať
+                                                </button>
+                                                <!-- <button class="btn btn-sm btn-danger" t-on-click="() => this.onPauseInvalidate(racer)">
+                                                    Vynulovať
+                                                </button> -->
+                                            </t>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

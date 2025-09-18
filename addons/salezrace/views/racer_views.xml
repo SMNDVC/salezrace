@@ -31,6 +31,14 @@
                         class="btn btn-outline-primary btn-sm"
                         groups="salezrace.group_salezrace_manager"/>
 
+                <button name="action_show_pause_logs"
+                        type="object"
+                        string="Show Pause Logs"
+                        class="btn btn-secondary btn-sm"
+                        groups="salezrace.group_salezrace_manager"/>
+
+                <field name="total_pause_time"/>
+
                 <field name="start_time"
                     groups="salezrace.group_salezrace_start_finish,salezrace.group_salezrace_manager"
                     readonly="1"/>

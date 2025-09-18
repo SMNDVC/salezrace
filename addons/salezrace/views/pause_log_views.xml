@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_salezrace_pause_log_tree" model="ir.ui.view">
+        <field name="name">salezrace.pause.log.tree</field>
+        <field name="model">salezrace.pause.log</field>
+        <field name="arch" type="xml">
+            <tree string="Pause Logs" editable="bottom">
+                <field name="racer_id" readonly="1" force_save="1"/>
+                <field name="checkpoint_id" readonly="1" force_save="1"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="is_invalid" readonly="1"/>
+                <field name="is_custom" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
