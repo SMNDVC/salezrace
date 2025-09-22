@@ -1,0 +1,13 @@
+Module Name,Technical Name,Author,Website,Latest Version,Status
+Easy AI Chat,llm_thread,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.3.0,Installed
+LLM Integration Base,llm,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.4.0,Installed
+LLM Assistant,llm_assistant,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.5.0,Installed
+LLM Knowledge,llm_knowledge,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.1.0,Installed
+LLM Knowledge Automation,llm_knowledge_automation,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.0.0,Installed
+OpenAI LLM Integration,llm_openai,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.1.3,Installed
+LLM PgVector,llm_pgvector,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.0.0,Installed
+LLM Vector Store Base,llm_store,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.0.0,Installed
+LLM Tool,llm_tool,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.3.0.0,Installed
+LLM Tool RAG,llm_tool_knowledge,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.0.1,Installed
+LLM Training Management,llm_training,Apexive Solutions LLC,https://github.com/apexive/odoo-llm,16.0.1.0.0,Installed
+RDO LLM RAG Integration,rdo_rag_integration,rimedo s.r.o.,,16.0.1.0.0,Installed
