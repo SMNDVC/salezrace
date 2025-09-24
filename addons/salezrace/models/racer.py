@@ -198,14 +198,14 @@ class SalezRaceRacer(models.Model):
     # -----------------------
     # Computations
     # -----------------------
-    @api.depends("start_time", "finish_time")
+    @api.depends("start_time", "finish_time", "total_pause_time")
     def _compute_final_time(self) -> None:
         """Compute mm:ss from finish_time - start_time."""
         for rec in self:
             rec.final_time = False
             if rec.start_time and rec.finish_time and rec.finish_time >= rec.start_time:
                 delta = fields.Datetime.to_datetime(rec.finish_time) - fields.Datetime.to_datetime(rec.start_time)
-                total_seconds = int(delta.total_seconds())
+                total_seconds = int(delta.total_seconds() - rec.total_pause_time)
                 minutes, seconds = divmod(total_seconds, 60)
                 rec.final_time = f"{minutes:02d}:{seconds:02d}"
 
