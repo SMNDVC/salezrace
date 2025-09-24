@@ -112,7 +112,7 @@ export class StartClientAction extends Component {
             body: `Remove start time for racer #${row.racer_no} ${row.first_name} ${row.last_name}?`,
             confirm: async () => {
                 try {
-                    await this.orm.write("salezrace.racer", [row.id], { start_time: false });
+                    await this.orm.write("salezrace.racer", [row.id], { start_time: false, finish_time: false });
                     if (this.state.racer && this.state.racer.id === row.id) {
                         this.state.racer.start_time = false;
                     }
