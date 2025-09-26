@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="dashboard_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+
+                    <div class="container">
+                        <t t-foreach="docs.get_dashboard_data()" t-as="pair">
+                            <div class="row mb-4" style="page-break-inside: avoid;">
+                                <!-- Male Category -->
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-header text-white py-1" style="background-color: #6B8BA4;">
+                                            <h5 class="m-0">
+                                                <t t-esc="pair['male']['category']"/>
+                                                <span class="ms-2 fs-6 fw-normal">
+                                                    (<t t-esc="pair['male']['age_range']"/> years)
+                                                </span>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-striped table-sm mb-0 fs-4">
+                                                <tbody>
+                                                    <t t-foreach="pair['male']['racers']" t-as="racer">
+                                                        <tr>
+                                                            <td style="width: 20%;"><strong t-esc="racer.get('age', '')"/></td>
+                                                            <td style="width: 60%;">
+                                                                <strong>
+                                                                    <t t-esc="racer.get('first_name', '') + ' ' + racer.get('last_name', '')"/>
+                                                                    <span t-if="racer.get('overall_rank')" class="ms-2 fst-italic">
+                                                                        (top <t t-esc="racer['overall_rank']"/>)
+                                                                    </span>
+                                                                </strong>
+                                                            </td>
+                                                            <td style="width: 20%;"><strong><t t-esc="racer.get('final_time', '')"/></strong></td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Female Category -->
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-header text-white py-1" style="background-color: #C97B84;">
+                                            <h5 class="m-0">
+                                                <t t-esc="pair['female']['category']"/>
+                                                <span class="ms-2 fs-6 fw-normal">
+                                                    (<t t-esc="pair['female']['age_range']"/> years)
+                                                </span>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-striped table-sm mb-0 fs-4">
+                                                <tbody>
+                                                    <t t-foreach="pair['female']['racers']" t-as="racer">
+                                                        <tr>
+                                                            <td style="width: 20%;"><strong t-esc="racer.get('age', '')"/></td>
+                                                            <td style="width: 60%;">
+                                                                <strong>
+                                                                    <t t-esc="racer.get('first_name', '') + ' ' + racer.get('last_name', '')"/>
+                                                                    <span t-if="racer.get('overall_rank')" class="ms-2 fst-italic">
+                                                                        (top <t t-esc="racer['overall_rank']"/>)
+                                                                    </span>
+                                                                </strong>
+                                                            </td>
+                                                            <td style="width: 20%;"><strong><t t-esc="racer.get('final_time', '')"/></strong></td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

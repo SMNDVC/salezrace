@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="salezrace.DashboardClientAction">
+        <div class="o_salezrace_dashboard p-4 mw-100">
+
+            <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-secondary me-2" t-on-click="fetchDashboardData">
+                    <i class="fa fa-refresh me-1"/> Refresh
+                </button>
+                <button class="btn btn-secondary" t-on-click="print">
+                    <i class="fa fa-print me-1"/> Print
+                </button>
+            </div>
+
+
+
+
+            <div t-if="state.loading" class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <div t-if="!state.loading">
+                <t t-foreach="state.categoryPairs" t-as="pair" t-key="pair.male.category">
+                    <div class="row mb-4">
+                        <!-- Male Category -->
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header text-white py-1" style="background-color: #6B8BA4;">
+                                    <h5 class="m-0 fs-2 text-white d-flex align-items-baseline">
+                                        <t t-esc="pair.male.category"/>
+                                        <span class="ms-2 fs-4 fw-normal">
+                                            (<t t-esc="pair.male.age_range"/> years)
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <table class="table table-striped table-sm mb-0 fs-4 font-monospace">
+                                        <tbody>
+                                            <t t-foreach="pair.male.racers" t-as="racer" t-key="racer.id || 'placeholder-' + index">
+                                                <tr>
+                                                    <td style="width: 5%;" class="align-middle"><strong><t t-esc="racer.age || ''"/></strong></td>
+                                                    <td style="width: 65%;" class="align-middle">
+                                                        <strong>
+                                                            <t t-esc="(racer.first_name || '') + ' ' + (racer.last_name || '')"/>
+                                                            <span t-if="racer.overall_rank" class="ms-2 fst-italic">
+                                                                (top <t t-esc="racer.overall_rank"/>)
+                                                            </span>
+                                                        </strong>
+                                                    </td>
+                                                    <td style="width: 30%;" class="align-middle text-end pe-3"><strong><t t-esc="racer.final_time || ''"/></strong></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Female Category -->
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header text-white py-1" style="background-color: #C97B84;">
+                                    <h5 class="m-0 fs-2 text-white d-flex align-items-baseline">
+                                        <t t-esc="pair.female.category"/>
+                                        <span class="ms-2 fs-4 fw-normal">
+                                            (<t t-esc="pair.female.age_range"/> years)
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <table class="table table-striped table-sm mb-0 fs-4 font-monospace">
+                                        <tbody>
+                                            <t t-foreach="pair.female.racers" t-as="racer" t-key="racer.id || 'placeholder-' + index">
+                                                <tr>
+                                                    <td style="width: 5%;" class="align-middle"><strong><t t-esc="racer.age || ''"/></strong></td>
+                                                    <td style="width: 65%;" class="align-middle">
+                                                        <strong>
+                                                            <t t-esc="(racer.first_name || '') + ' ' + (racer.last_name || '')"/>
+                                                            <span t-if="racer.overall_rank" class="ms-2 fst-italic">
+                                                                (top <t t-esc="racer.overall_rank"/>)
+                                                            </span>
+                                                        </strong>
+                                                    </td>
+                                                    <td style="width: 30%;" class="align-middle text-end pe-3"><strong><t t-esc="racer.final_time || ''"/></strong></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

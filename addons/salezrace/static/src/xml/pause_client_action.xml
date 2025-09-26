@@ -32,7 +32,7 @@
                         <tbody>
                             <t t-foreach="state.onTrack" t-as="racer" t-key="racer.id">
                                 <tr>
-                                    <td>#<t t-esc="racer.racer_no"/> <t t-esc="racer.first_name"/> <t t-esc="racer.last_name"/></td>
+                                    <td><strong class="fs-2">#<t t-esc="racer.racer_no"/></strong> <t t-esc="racer.first_name"/> <t t-esc="racer.last_name"/></td>
                                     <td class="text-end">
                                         <t t-if="racer.active_pause_log_id &amp;&amp; racer.active_pause_user_id[0] !== state.session.uid">
                                             <span>Tento bežec práve stojí na stanovisku <t t-esc="racer.active_pause_checkpoint_name"/></span>

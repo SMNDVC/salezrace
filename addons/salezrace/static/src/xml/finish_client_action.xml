@@ -26,7 +26,7 @@
                     <tbody>
                         <t t-foreach="state.onTrack" t-as="r" t-key="r.id">
                             <tr>
-                                <td><t t-esc="r.racer_no"/></td>
+                                <td><strong class="fs-2"><t t-esc="r.racer_no"/></strong></td>  
                                 <td><t t-esc="r.first_name"/></td>
                                 <td><t t-esc="r.last_name"/></td>
                                 <td><t t-esc="r.age"/></td>

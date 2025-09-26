@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_salezrace_dashboard" model="ir.actions.report">
+        <field name="name">SalezRace Dashboard</field>
+        <field name="model">salezrace.racer</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">salezrace.dashboard_report_template</field>
+        <field name="report_file">salezrace.dashboard_report_template</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="salezrace.paperformat_salezrace_dashboard"/>
+    </record>
+</odoo>

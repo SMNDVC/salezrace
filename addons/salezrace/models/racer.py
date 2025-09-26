@@ -463,3 +463,60 @@ class SalezRaceRacer(models.Model):
             "domain": [("racer_id", "=", self.id)],
             "target": "new",
         }
+
+    @api.model
+    def get_dashboard_data(self):
+        racers = self.search([
+            ("finish_time", "!=", False),
+            ("final_time", "!=", False)
+        ], order="final_time asc")
+
+        top3_ids = racers[:3].ids
+
+        category_groups = {}
+        for racer in racers:
+            rank = top3_ids.index(racer.id) + 1 if racer.id in top3_ids else 0
+            if racer.category not in category_groups:
+                category_groups[racer.category] = []
+            
+            if len(category_groups[racer.category]) < 3:
+                racer_data = racer.read(["age", "first_name", "last_name", "final_time"])[0]
+                racer_data['overall_rank'] = rank
+                category_groups[racer.category].append(racer_data)
+
+        category_pair_order = [
+            ("MU6", "FU6"),
+            ("M6", "F6"),
+            ("M10", "F10"),
+            ("M14", "F14"),
+            ("M18", "F18"),
+            ("M31", "F31"),
+            ("M45", "F45"),
+        ]
+
+        category_ages = {
+            'U6': '< 6',
+            '6': '6-9',
+            '10': '10-13',
+            '14': '14-17',
+            '18': '18-30',
+            '31': '31-44',
+            '45': '45+',
+        }
+
+        category_pairs = []
+        for male_cat, female_cat in category_pair_order:
+            male_racers = category_groups.get(male_cat, [])
+            female_racers = category_groups.get(female_cat, [])
+
+            while len(male_racers) < 3:
+                male_racers.append({})
+            while len(female_racers) < 3:
+                female_racers.append({})
+            
+            category_pairs.append({
+                'male': { 'category': male_cat, 'racers': male_racers, 'age_range': category_ages[male_cat[1:]] },
+                'female': { 'category': female_cat, 'racers': female_racers, 'age_range': category_ages[female_cat[1:]] },
+            })
+
+        return category_pairs
